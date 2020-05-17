@@ -1,3 +1,6 @@
+# Overview
+The Terraform scripts here automate the creation of an Openshift cluster on vSphere User Provisioned Infrastructure (UPI) using static IP addresses.  There must be a functional DHCP & DNS already present in the environment.  Due to the way RHCOS VM provisioning works on VMware (even when those VMs will be configured with static IP addresses) a DHCP server is necessary so that each VM can momentarily connect to the network and download their ignition configuration.  However, the final disposition of each VM will ultimately result in a VM that is configure with a static IP.  See [here](https://github.com/openshift/installer/blob/master/docs/user/vsphere/install_upi.md) for more details.
+
 # Reference Documentation:
 Official Openshift docs
  * [Installing a cluster on vSphere](https://docs.openshift.com/container-platform/4.3/installing/installing_vsphere/installing-vsphere.html)
@@ -9,12 +12,24 @@ Blogs
  * [OpenShift 4.2 vSphere Install Quickstart](https://www.openshift.com/blog/openshift-4-2-vsphere-install-quickstart)
  * [OpenShift 4.3 installation on VMware vSphere with static IPs](https://labs.consol.de/container/platform/openshift/2020/01/31/ocp43-installation-vmware.html)
 
+# Credits
+ The following sources were very instrumental in the creation of this asset
+ * [gojeaqui's Git repo](https://github.com/gojeaqui/installer/blob/master/upi/vsphere/README.md)
+ * [Openshift install Git repo](https://github.com/openshift/installer/tree/release-4.7/upi/vsphere)
+ 
 # Pre-Requisites
 
 * [Terraform version >= 0.12.24](https://www.terraform.io/downloads.html)
 * [VMWare command line tool govc](https://github.com/vmware/govmomi)
 
 # Setup Prerequisites
+Prior to these templates, you must have a functional DHCP and DNS setup running.
+Once the pre-reqs are in place, the Terraform scripts here will automate the creation of the following VMs;
+ - Load Balancer
+ - Boostrap
+ - Masters
+ - Workers
+
 Install the required packages
 ```
 yum install -y bind-utils httpd dhcp unzip git
@@ -184,19 +199,23 @@ Run `terraform init` to initialize terraform, it will download the required plug
 
 Run `terraform plan` to see the changes that terraform is going to apply to the vCenter
 
-Run `terraform apply`.
-Terraform will create a folder in the vCenter with the name of the cluster and place the VMs inside that folder.
-It will also create a resource group with the same name.
+Create everything all at once.
+ Run `terraform apply`.
+ Terraform will create a folder in the vCenter with the name of the cluster and place the VMs inside that folder.
+ This will create the following VMs;
+  - loadbalancer
+  - bootstrap
+  - master1, master2, master3
+  - worker1, worker2, worker3
 
-Run `./config-gen.py dhcp terraform.tfvars`.
-This script will generate a dhcpd.conf configuration and copy it to the /etc/dhcpd directory, just follow the script instructions.
-The script will test the DNS entries to see if they are correctly configured
+Or, you can create on tier at a time.
+ To create the loadbalancer VM, run `terraform apply -target=module.lb_vm -auto-approve`
+ To create the bootstrap VM, run `terraform apply -target=module.bootstrap -auto-approve`
+ To create the master VMs, run `terraform apply -target=module.control-plane_vm -auto-approve`
+ To create the worker VMs, run `terraform apply -target=module.compute_vm -auto-approve`
 
 Run `openshift-install --dir=ocp4 wait-for bootstrap-complete`. 
 Wait for the bootstrapping to complete.
-
-Run `terraform apply -var 'bootstrap_complete=true'`.
-This will destroy the bootstrap VM.
 
 Run `openshift-install --dir=ocp4 wait-for install-complete`. 
 Wait for the cluster install to finish.
