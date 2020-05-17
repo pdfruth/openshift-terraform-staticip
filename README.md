@@ -126,19 +126,19 @@ controlPlane:
   name: master
   replicas: 3
 metadata:
-  name: closprod
+  name: ocpv4
 platform:
   vsphere:
-    vcenter: vcentercc.example.com
-    username: VSPHERE_DYNAMIC_PROVISIONING_USER
-    password: VSPHERE_DYNAMIC_PROVISIONING_PASSWORD
-    datacenter: Cluster
-    defaultDatastore: Datastore
+    vcenter: vcenter.example.com
+    username: VSPHERE_USER
+    password: VSPHERE_PASSWORD
+    datacenter: datacenter
+    defaultDatastore: nvme-datastore
 networking:
   clusterNetworks:
   - cidr: "10.128.0.0/14"
     hostPrefix: 23
-  machineCIDR: "192.168.10.0/24"
+  machineCIDR: "192.168.11.0/24"
   serviceCIDR: "172.30.0.0/16"
 fips: false 
 pullSecret: '{"auths": ...}'
