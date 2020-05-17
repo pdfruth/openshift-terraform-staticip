@@ -85,7 +85,7 @@ module "lb_vm" {
   dns_addresses = var.vm_dns_addresses
 }
 
-module "bootstrap" {
+module "bootstrap_vm" {
   source = "./vm"
 
   ignition              = null
