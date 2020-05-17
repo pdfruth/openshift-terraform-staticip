@@ -32,8 +32,8 @@ vm_template = "t_RHCOS43"
 // Additionally, IPAM will assign IPs based on the network ID. 
 machine_cidr = "192.168.11.0/24"
 
-// Set bootstrap_ip, control_plane_ip, and compute_ip if you want to use static
-// IPs reserved someone else, rather than the IPAM server.
+// Set lb_ip_address, bootstrap_ip_address, control_plane_ip_addresses, and compute_ip_addresses to the static IPs
+// assigned to each of the VMs in the Openshift cluster.
 
 // The IP address to assign to the load balancer VM.
 lb_ip_address = "192.168.11.10"
