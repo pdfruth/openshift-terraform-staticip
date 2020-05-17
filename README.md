@@ -201,19 +201,19 @@ Run `terraform init` to initialize terraform, it will download the required plug
 Run `terraform plan` to see the changes that terraform is going to apply to the vCenter
 
 Create everything all at once.
- Run `terraform apply`.
- Terraform will create a folder in the vCenter with the name of the cluster and place the VMs inside that folder.
+ Run `terraform apply -auto-approve`.  
+ Terraform will create a folder in the vCenter with the name of the cluster and place the VMs inside that folder.  
  This will create the following VMs;
   - loadbalancer
   - bootstrap
   - master1, master2, master3
   - worker1, worker2, worker3
 
-Or, you can create on tier at a time.
- To create the loadbalancer VM, run `terraform apply -target=module.lb_vm -auto-approve`
- To create the bootstrap VM, run `terraform apply -target=module.bootstrap -auto-approve`
- To create the master VMs, run `terraform apply -target=module.control-plane_vm -auto-approve`
- To create the worker VMs, run `terraform apply -target=module.compute_vm -auto-approve`
+Or, you can create one tier at a time.  
+To create the loadbalancer VM, run `terraform apply -target=module.lb_vm -auto-approve`  
+To create the bootstrap VM, run `terraform apply -target=module.bootstrap -auto-approve`  
+To create the master VMs, run `terraform apply -target=module.control-plane_vm -auto-approve`  
+To create the worker VMs, run `terraform apply -target=module.compute_vm -auto-approve`
 
 Run `openshift-install --dir=ocp4 wait-for bootstrap-complete`. 
 Wait for the bootstrapping to complete.
