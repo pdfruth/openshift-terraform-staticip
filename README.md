@@ -12,7 +12,7 @@ Blogs
  * [OpenShift 4.2 vSphere Install Quickstart](https://www.openshift.com/blog/openshift-4-2-vsphere-install-quickstart)
  * [OpenShift 4.3 installation on VMware vSphere with static IPs](https://labs.consol.de/container/platform/openshift/2020/01/31/ocp43-installation-vmware.html)
 
-# Credits
+Credits
  The following sources were very instrumental in the creation of this asset
  * [gojeaqui's Git repo](https://github.com/gojeaqui/installer/blob/master/upi/vsphere/README.md)
  * [Openshift install Git repo](https://github.com/openshift/installer/tree/release-4.7/upi/vsphere)
