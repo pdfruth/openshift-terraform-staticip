@@ -211,7 +211,7 @@ Create everything all at once.
 
 Or, you can create one tier at a time.  
 To create the loadbalancer VM, run `terraform apply -target=module.lb_vm -auto-approve`  
-To create the bootstrap VM, run `terraform apply -target=module.bootstrap -auto-approve`  
+To create the bootstrap VM, run `terraform apply -target=module.bootstrap_vm -auto-approve`  
 To create the master VMs, run `terraform apply -target=module.control-plane_vm -auto-approve`  
 To create the worker VMs, run `terraform apply -target=module.compute_vm -auto-approve`
 
