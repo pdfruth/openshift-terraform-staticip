@@ -71,28 +71,37 @@ Test the govc CLI settings
 ```
 govc ls
 govc about
+```  
+Check to see what resource pools are available  
+```
+govc find . -type p
+```  
+
+Check to see if a suitable folder already exists to store the template  
+```
+govc find . -type f
+```  
+
+If you don't already have a folder, you can create a folder to store your template in
+```
+govc folder.create /datacenter/vm/templates
 ```
 
-If you don't already have a Folder, you can create a folder to store your template in
-```
-govc folder.create /Datacenter/vm/Production/ocp4
-```
-
-Download the OVA and import it into the Template Repository
+Download the OVA and import it into the template folder
 ```
 curl -O https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.3/4.3.8/rhcos-4.3.8-x86_64-vmware.x86_64.ova
 ```
 
-Verify that the Template options are the ones you want
+Verify that the template options are the ones you want
 ```
-govc import.spec rhcos-4.3.8-x86_64-vmware.x86_64.ova | python -m json.tool > rhcos.json
+govc import.spec rhcos-4.3.8-x86_64-vmware.x86_64.ova | jq '.' > rhcos.json
 vi rhcos.json
 ```
 
 Import the template and mark it as such
 ```
-govc import.ova -name=rhcos-4.3.8 -pool=/Datacenter/host/Cluster/Resources -ds=Datastore -folder=templates -options=rhcos.json ./rhcos-4.3.8-x86_64-vmware.x86_64.ova
-govc vm.markastemplate /Datacenter/vm/templates/rhcos-4.3.8
+govc import.ova -name=t_rhcos-4.3.8 -pool=/datacenter/host/Cluster/Resources -ds=datastore -folder=templates -options=rhcos.json ./rhcos-4.3.8-x86_64-vmware.x86_64.ova
+govc vm.markastemplate /datacenter/vm/templates/t_rhcos-4.3.8
 ```
 
 # Build the Cluster
