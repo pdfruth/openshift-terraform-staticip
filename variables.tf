@@ -1,17 +1,3 @@
-// phpIPAM variables
-
-variable "ipam" {
-  type        = string
-  description = "The IPAM server to use for IP management."
-  default     = ""
-}
-
-variable "ipam_token" {
-  type        = string
-  description = "The IPAM token to use for requests."
-  default     = ""
-}
-
 //////
 // vSphere variables
 //////
@@ -62,11 +48,6 @@ variable "vm_dns_addresses" {
   default = ["1.1.1.1", "9.9.9.9"]
 }
 
-variable "vm_resource_pool" {
-  type        = string
-  default     = "Resources"
-}
-
 variable "ignition_url" {
   type = string
 }
@@ -98,11 +79,6 @@ variable "machine_cidr" {
 // Bootstrap machine variables
 /////////
 
-variable "bootstrap_ignition_path" {
-  type    = string
-  default = "./bootstrap.ign"
-}
-
 variable "bootstrap_complete" {
   type    = string
   default = "false"
@@ -121,11 +97,6 @@ variable "lb_ip_address" {
 ///////////
 // control-plane machine variables
 ///////////
-
-variable "control_plane_ignition_path" {
-  type    = string
-  default = "./master.ign"
-}
 
 variable "control_plane_count" {
   type    = string
@@ -149,11 +120,6 @@ variable "control_plane_num_cpus" {
 //////////
 // compute machine variables
 //////////
-
-variable "compute_ignition_path" {
-  type    = string
-  default = "./worker.ign"
-}
 
 variable "compute_count" {
   type    = string
