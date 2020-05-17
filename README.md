@@ -24,7 +24,7 @@ Credits
 * [VMWare command line tool govc](https://github.com/vmware/govmomi)
 
 # Setup Prerequisites
-Prior to these templates, you must have a functional DHCP and DNS setup running.
+Prior to using these templates, you must have a functional DHCP and DNS setup running.
 Once the pre-reqs are in place, the Terraform scripts here will automate the creation of the following VMs;
  - Load Balancer
  - Boostrap
