@@ -1,13 +1,13 @@
-// ID identifying the cluster to create. Use your username so that resources created can be tracked back to you.
+// ID identifying the cluster to create.
 cluster_name = "ocp4"
-
-// Domain of the cluster. This should be "${cluster_name}.${base_domain}".
-cluster_domain = "ocp4.internal.net"
 
 // Base domain from which the cluster domain is a subdomain.
 base_domain = "internal.net"
 
-// Name of the vSphere server. The dev cluster is on "vcsa.vmware.devcluster.openshift.com".
+// Domain of the cluster. This should be "${cluster_name}.${base_domain}".
+cluster_domain = "ocp4.internal.net"
+
+// IP address or hostname of the vCenter server
 vsphere_server = "192.168.1.8"
 
 // User on the vSphere server.
@@ -16,16 +16,16 @@ vsphere_user = "administrator@vsphere.local"
 // Password of the user on the vSphere server.
 vsphere_password = "supers3cr3t"
 
-// Name of the vSphere cluster. The dev cluster is "devel".
+// Name of the vSphere cluster.
 vsphere_cluster = "Cluster"
 
-// Name of the vSphere data center. The dev cluster is "dc1".
+// Name of the vSphere data center.
 vsphere_datacenter = "datacenter"
 
-// Name of the vSphere data store to use for the VMs. The dev cluster uses "nvme-ds1".
+// Name of the vSphere data store to use for the VMs.
 vsphere_datastore = "nvme-datastore"
 
-// Name of the VM template to clone to create VMs for the cluster. The dev cluster has a template named "rhcos-latest".
+// Name of the VM template to clone to create VMs for the cluster.
 vm_template = "t_RHCOS43"
 
 // The machine_cidr where IP addresses will be assigned for cluster nodes.
@@ -35,7 +35,7 @@ machine_cidr = "192.168.11.0/24"
 // Set bootstrap_ip, control_plane_ip, and compute_ip if you want to use static
 // IPs reserved someone else, rather than the IPAM server.
 
-// The IP address to assign to the bootstrap VM.
+// The IP address to assign to the load balancer VM.
 lb_ip_address = "192.168.11.10"
 
 // The IP address to assign to the bootstrap VM.
@@ -59,7 +59,16 @@ compute_ip_addresses = ["192.168.11.18", "192.168.11.19", "192.168.11.20"]
 compute_num_cpus = "8"
 compute_memory = "16384"
 
+// The name of a port group on a distributed vSwitch.  Each VM's virtual NIC will be assigned to this network.
+// I tend to create a separate VLAN for each environment.  And, thus a dedicated port group named with the VLAN id
 vm_network = "11"
-vm_dns_addresses = ["192.168.11.1"]
-ignition_url = "http://192.168.11.2/ocp11"
 
+// The IP address(s) of the DNS server on that network.  A comma separated list, of there is more than one.
+vm_dns_addresses = ["192.168.11.1"]
+
+// The IP address & context root of an HTTP server where the Openshift ignition configs can be downloaded.
+// For example, before running 'terraform apply' you should be able to do;
+//  wget http://<ignition_url>/bootstrap.ign
+//  wget http://<ignition_url>/master.ign
+//  wget http://<ignition_url>/worker.ign
+ignition_url = "http://192.168.11.2/ocp11"
