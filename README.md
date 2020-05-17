@@ -55,7 +55,7 @@ gunzip govc_0.22.2_linux_amd64.gz
 mv govc_0.22.2_linux_amd64 /usr/local/bin/govc
 chmod +x /usr/local/bin/govc
 ```
- * [govc usage](https://github.com/vmware/govmomi/blob/master/govc/USAGE.md)
+ * For govc details, see [govc usage](https://github.com/vmware/govmomi/blob/master/govc/USAGE.md)
  
 Configure the CLI with the vSphere settings
 ```
@@ -92,11 +92,12 @@ Download the OVA and import it into the template folder
 curl -O https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.3/4.3.8/rhcos-4.3.8-x86_64-vmware.x86_64.ova
 ```
 
-Verify that the template options are the ones you want
+Verify that the template options are the ones you want  
+    Hint: Maybe you want to change *DiskProvisioning* from *flat* to *thin*
 ```
 govc import.spec rhcos-4.3.8-x86_64-vmware.x86_64.ova | jq '.' > rhcos.json
 vi rhcos.json
-```
+```  
 
 Import the template and mark it as such
 ```
