@@ -63,12 +63,13 @@ compute_memory = "16384"
 // I tend to create a separate VLAN for each environment.  And, thus a dedicated port group named with the VLAN id
 vm_network = "11"
 
-// The IP address(s) of the DNS server on that network.  A comma separated list, of there is more than one.
+// The IP address(s) of the DNS server(s) on the network.  A comma separated list, if there is more than one.
 vm_dns_addresses = ["192.168.11.1"]
+// vm_dns_addresses = ["1.1.1.1", "2.2.2.2"]
 
 // The IP address & context root of an HTTP server where the Openshift ignition configs can be downloaded.
 // For example, before running 'terraform apply' you should be able to do;
 //  wget http://<ignition_url>/bootstrap.ign
 //  wget http://<ignition_url>/master.ign
 //  wget http://<ignition_url>/worker.ign
-ignition_url = "http://192.168.11.2/ocp11"
+ignition_url = "http://192.168.11.2/ocp4"
