@@ -39,7 +39,7 @@ variable "cluster_name" {
   type = string
 }
 
-variable "cluster_domain" {
+variable "base_domain" {
   type = string
 }
 
@@ -66,4 +66,3 @@ variable "dns_addresses" {
 variable "ignition_file_url" {
   type = string
 }
-
