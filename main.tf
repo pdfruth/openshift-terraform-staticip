@@ -1,9 +1,9 @@
 locals {
-  bootstrap_fqdns     = ["bootstrap.${var.cluster_domain}"]
-  lb_fqdns            = ["loadbalancer.${var.cluster_domain}"]
-  api_lb_fqdns        = formatlist("%s.%s", ["api", "api-int", "*.apps"], var.cluster_domain)
-  control_plane_fqdns = [for idx in range(var.control_plane_count) : "master${idx + 1}.${var.cluster_domain}"]
-  compute_fqdns       = [for idx in range(var.compute_count) : "worker${idx + 1}.${var.cluster_domain}"]
+  bootstrap_fqdns     = ["bootstrap.${var.base_domain}"]
+  lb_fqdns            = ["loadbalancer.${var.base_domain}"]
+  api_lb_fqdns        = formatlist("%s.%s", ["api", "api-int", "*.apps"], var.base_domain)
+  control_plane_fqdns = [for idx in range(var.control_plane_count) : "master${idx + 1}.${var.base_domain}"]
+  compute_fqdns       = [for idx in range(var.compute_count) : "worker${idx + 1}.${var.base_domain}"]
 }
 
 provider "vsphere" {
@@ -77,7 +77,7 @@ module "lb_vm" {
   disk_thin_provisioned = data.vsphere_virtual_machine.template.disks[0].thin_provisioned
 
   cluster_name   = var.cluster_name
-  cluster_domain = var.cluster_domain
+  base_domain    = var.base_domain
   machine_cidr   = var.machine_cidr
 
   num_cpus      = 2
@@ -106,7 +106,7 @@ module "bootstrap_vm" {
   disk_thin_provisioned = data.vsphere_virtual_machine.template.disks[0].thin_provisioned
 
   cluster_name   = var.cluster_name
-  cluster_domain = var.cluster_domain
+  base_domain    = var.base_domain
   machine_cidr   = var.machine_cidr
 
   num_cpus      = 4
@@ -135,7 +135,7 @@ module "control_plane_vm" {
   disk_thin_provisioned = data.vsphere_virtual_machine.template.disks[0].thin_provisioned
 
   cluster_name   = var.cluster_name
-  cluster_domain = var.cluster_domain
+  base_domain    = var.base_domain
   machine_cidr   = var.machine_cidr
 
   num_cpus      = var.control_plane_num_cpus
@@ -164,11 +164,10 @@ module "compute_vm" {
   disk_thin_provisioned = data.vsphere_virtual_machine.template.disks[0].thin_provisioned
 
   cluster_name   = var.cluster_name
-  cluster_domain = var.cluster_domain
+  base_domain    = var.base_domain
   machine_cidr   = var.machine_cidr
 
   num_cpus      = var.compute_num_cpus
   memory        = var.compute_memory
   dns_addresses = var.vm_dns_addresses
 }
-
