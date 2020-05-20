@@ -26,7 +26,7 @@ data "ignition_file" "static_ip" {
       dns_addresses = var.dns_addresses,
       machine_cidr  = var.machine_cidr
       ip_address     = each.value
-      cluster_domain = var.cluster_domain
+      base_domain = var.base_domain
     })
   }
 }
@@ -63,4 +63,3 @@ data "ignition_config" "ign" {
     data.ignition_file.static_ip[each.key].rendered,
   ]
 }
-
