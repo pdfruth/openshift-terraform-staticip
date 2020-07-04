@@ -58,6 +58,15 @@ compute_ip_addresses = ["192.168.11.18", "192.168.11.19", "192.168.11.20"]
 compute_num_cpus = "8"
 compute_memory = "16384"
 
+// The number of storage VMs to create. Default is 3.
+storage_count = 3
+
+// The IP addresses to assign to the storage VMs. The length of this list must
+// match the value of compute_count.
+storage_ip_addresses = ["192.168.11.15", "192.168.11.16", "192.168.11.17"]
+storage_num_cpus = "16"
+storage_memory = "65536"
+
 // The name of a port group on a distributed vSwitch.  Each VM's virtual NIC will be assigned to this network.
 // I tend to create a separate VLAN for each environment.  And, thus a dedicated port group named with the VLAN id
 vm_network = "11"
