@@ -4,6 +4,7 @@ locals {
   api_lb_fqdns        = formatlist("%s.%s", ["api", "api-int", "*.apps"], var.base_domain)
   control_plane_fqdns = [for idx in range(var.control_plane_count) : "master${idx + 1}.${var.base_domain}"]
   compute_fqdns       = [for idx in range(var.compute_count) : "worker${idx + 1}.${var.base_domain}"]
+  storage_fqdns       = [for idx in range(var.storage_count) : "storage${idx + 1}.${var.base_domain}"]
 }
 
 provider "vsphere" {
@@ -52,7 +53,11 @@ module "lb" {
     var.control_plane_ip_addresses
   ])
 
-  ingress_backend_addresses = var.compute_ip_addresses
+  ingress_backend_addresses = flatten([
+    var.compute_ip_addresses,
+    var.storage_ip_addresses
+  ])
+
   ssh_public_key_path       = var.ssh_public_key_path
 }
 
@@ -169,5 +174,34 @@ module "compute_vm" {
 
   num_cpus      = var.compute_num_cpus
   memory        = var.compute_memory
+  dns_addresses = var.vm_dns_addresses
+}
+
+module "storage_vm" {
+  source = "./vm"
+
+  ignition              = null
+  ignition_file_url     = "${var.ignition_url}/worker.ign"
+
+  hostnames_ip_addresses = zipmap(
+    local.storage_fqdns,
+    var.storage_ip_addresses
+  )
+
+  resource_pool_id      = data.vsphere_compute_cluster.compute_cluster.resource_pool_id
+  datastore_id          = data.vsphere_datastore.datastore.id
+  datacenter_id         = data.vsphere_datacenter.dc.id
+  network_id            = data.vsphere_network.network.id
+  folder_id             = vsphere_folder.folder.path
+  guest_id              = data.vsphere_virtual_machine.template.guest_id
+  template_uuid         = data.vsphere_virtual_machine.template.id
+  disk_thin_provisioned = data.vsphere_virtual_machine.template.disks[0].thin_provisioned
+
+  cluster_name   = var.cluster_name
+  base_domain    = var.base_domain
+  machine_cidr   = var.machine_cidr
+
+  num_cpus      = var.storage_num_cpus
+  memory        = var.storage_memory
   dns_addresses = var.vm_dns_addresses
 }
